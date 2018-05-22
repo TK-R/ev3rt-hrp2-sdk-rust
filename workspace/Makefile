@@ -96,9 +96,9 @@ include $(APPLDIR)/Makefile.inc
 app: $(APPLDIR) prepare-obj-folder
 	@cd $(OBJDIR) && \
 	make module_cfg.h && \
+	rustc --target  armv5te-unknown-linux-gnueabi --emit=obj $(APPLDIR)/*.rs && \
 	make -j8 && \
 	cp app $(PWD)/app # && cp app $(PWD)/app-$(subst /,,$(app))
-
 endif
 
 usage:
