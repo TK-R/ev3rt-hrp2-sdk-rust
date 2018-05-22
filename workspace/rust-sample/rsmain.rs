@@ -3,7 +3,7 @@
 #![no_std]
 
 #[no_mangle]
-pub extern "C" fn rsmain(val: u32) -> u32 {
+pub extern "C" fn twice(val: u32) -> u32 {
 	let u = val + 2;
 	u
 }

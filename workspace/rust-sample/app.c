@@ -20,8 +20,11 @@ void test_ev3_cychdr(intptr_t idx)
 
 void main_task(intptr_t unused)
 {
+    int a = 0;
     while (1)
     {
-        syslog(LOG_NOTICE, "boot main_task!");
+        dly_tsk(500);
+        syslog(LOG_NOTICE, "a = %d, b = %d", a, twice(a));
+        a++;
     }
 }
