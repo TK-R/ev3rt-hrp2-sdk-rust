@@ -1,2 +1,2 @@
 APPL_COBJS += 
-ALL_LIBS += rsmain.o
+ALL_LIBS += rust.o

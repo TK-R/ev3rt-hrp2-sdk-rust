@@ -9,6 +9,9 @@ SDKDIR = ..
 WSPDIR = $(basename $(PWD))
 include $(SDKDIR)/Makefile.sdk.conf
 
+target := armv5te-unknown-linux-gnueabi
+rust_lib := target/$(target)/debug/librust_src.o
+
 # Configuration
 SRCLANG := c
 KERNEL := hrp2
@@ -94,12 +97,18 @@ ifdef app
 include $(APPLDIR)/Makefile.inc
 
 app: $(APPLDIR) prepare-obj-folder
-	@cd $(OBJDIR) && \
+	@cd $(APPLDIR) && \
+	cargo clean && \
+	cargo rustc --target $(target) -- -C panic=abort -O --emit=obj=$(OBJDIR)/rust.o && \
+	cd $(OBJDIR) && \
 	make module_cfg.h && \
-	rustc -O --target  armv5te-unknown-linux-gnueabi --emit=obj -C panic=abort  $(APPLDIR)/*.rs && \
 	make -j8 && \
 	cp app $(PWD)/app # && cp app $(PWD)/app-$(subst /,,$(app))
 endif
+	
+
+#cargo:
+#	~/.cargo/bin/cargo rustc --target $(target) -- -C panic=abort --emit=obj -O
 
 usage:
 	@echo make img="<folder>"
