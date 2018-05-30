@@ -1,5 +1,3 @@
-#[link(name = "ev3api")]
-
 extern "C" {
 	#[allow(dead_code)]
 	fn ev3_dly_tsk(msec: u32) -> i32;
