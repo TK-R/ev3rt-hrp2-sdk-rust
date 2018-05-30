@@ -1,0 +1,6 @@
+[build]
+target="armv5te-unknown-linux-gnueabi"
+
+[target.armv5te-unknown-linux-gnueabi]
+linker = "/usr/bin/arm-none-eabi-gcc"
+# -Wl,-nmagic -nostdlib -pie
