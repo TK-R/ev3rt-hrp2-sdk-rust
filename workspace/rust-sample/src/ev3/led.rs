@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 pub enum LEDColorT {
 	LEFOff = 0,
 	LEDRed = 1 << 0,
@@ -6,7 +5,6 @@ pub enum LEDColorT {
 	LEDOrange = 1 << 0 | 1 << 1,
 }
 
-#[allow(dead_code)]
 /// LEDライトのカラーを設定する
 /// 戻り値：設定結果
 pub fn lap_set_led_color(led: LEDColorT) -> i32 {

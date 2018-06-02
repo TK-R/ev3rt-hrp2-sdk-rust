@@ -26,6 +26,7 @@
 *.i*86
 *.x86_64
 *.hex
+*.bin
 
 # Application
 app
@@ -42,3 +43,6 @@ OBJ/
 # Doxygen
 common/ev3api/doc/ev3rt-doc-c-api-en
 common/ev3api/doc/ev3rt-doc-c-api-jp
+
+*.fingerprint*
+*armv5te-unknown-linux-gnueabi*

@@ -1,6 +1,6 @@
-#![feature(lang_items, asm, core_intrinsics)]
 #![no_std]
-
+#![feature(lang_items, asm, core_intrinsics)]
+#![allow(dead_code)]
 mod ev3;
 #[allow(unused_imports)]
 use ev3::{battery, button, led};
@@ -12,6 +12,7 @@ pub extern "C" fn main_task(_exinf: i32) {
 		button_led_test();
 	}
 }
+#[allow(dead_code)]
 
 fn button_led_test() {
 	ev3::lap_dly_tsk(100);
@@ -26,10 +27,8 @@ fn button_led_test() {
 	}
 }
 
-#[allow(dead_code)]
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() {}
 
-#[allow(dead_code)]
 #[lang = "panic_fmt"]
 extern "C" fn panic_fmt() {}

@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 pub enum ButtonT {
 	LeftButton,
 	RightButton,
@@ -9,7 +8,6 @@ pub enum ButtonT {
 	TnumButton,
 }
 
-#[allow(dead_code)]
 /// バッテリの電流を取得する
 /// 戻り値：バッテリの電流（mA）
 pub fn lap_button_is_pressed(b: ButtonT) -> bool {
