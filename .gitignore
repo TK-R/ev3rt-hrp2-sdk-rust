@@ -45,4 +45,6 @@ common/ev3api/doc/ev3rt-doc-c-api-en
 common/ev3api/doc/ev3rt-doc-c-api-jp
 
 *.fingerprint*
-*armv5te-unknown-linux-gnueabi*
+*target/armv5te-unknown-linux-gnueabi*
+*target/rls*
+*target/debug*

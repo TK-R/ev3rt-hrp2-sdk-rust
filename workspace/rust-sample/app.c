@@ -14,3 +14,9 @@ ER ev3_dly_tsk(uint32_t msec)
 {
     return dly_tsk(msec);
 }
+
+// syslogのラッパ関数
+void ev3_syslog(uint_t prio, const char *format, ...)
+{
+    syslog(prio, format);
+}
