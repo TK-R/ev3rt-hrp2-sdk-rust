@@ -1,15 +1,36 @@
 #![no_std]
 #![feature(lang_items, asm, core_intrinsics)]
-#![allow(dead_code)]
+#![allow(dead_code, improper_ctypes)]
+
 mod ev3;
 #[allow(unused_imports)]
 use ev3::{battery, button, led};
+
+#[macro_export]
+macro_rules! println {
+    () => (print!("\n"));
+    ($fmt:expr) => (print!(concat!($fmt, "\n")));
+    ($fmt:expr, $($arg:tt)*) => (print!(concat!($fmt, "\n"), $($arg)*));
+}
+
+#[macro_export]
+macro_rules! print {
+	//    ($($arg:tt)*) => (ev3::lap_syslog(format!(format_args!($($arg)*))));
+	($($arg:tt)*) => {
+		ev3::lap_syslog("")
+	};
+}
 
 #[no_mangle]
 pub extern "C" fn main_task(_exinf: i32) {
 	loop {
 		ev3::lap_dly_tsk(100);
+		if ev3::lap_is_connect() {
+			ev3::lap_syslog("");
+		}
+
 		button_led_test();
+		println!("");
 	}
 }
 #[allow(dead_code)]

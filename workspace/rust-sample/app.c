@@ -7,12 +7,21 @@
  */
 
 #include "ev3api.h"
+
+#include <string.h>
+#include <syssvc/serial.h>
+
 #include "app.h"
 
 // dly_tskのラッパ関数
 ER ev3_dly_tsk(uint32_t msec)
 {
     return dly_tsk(msec);
+}
+
+ER ev3_serial_wri_dat(ID portid, const char *buf, uint_t len)
+{
+    return serial_wri_dat(portid, buf, len);
 }
 
 // syslogのラッパ関数
