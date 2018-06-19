@@ -48,8 +48,18 @@ fn button_led_test() {
 	}
 }
 
+#[cfg(not(test))]
+#[allow(non_snake_case)]
+#[no_mangle]
+pub extern "C" fn _Unwind_Resume() -> ! {
+	loop {}
+}
+#[cfg(not(test))]
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() {}
-
+#[cfg(not(test))]
 #[lang = "panic_fmt"]
-extern "C" fn panic_fmt() {}
+#[no_mangle]
+pub extern "C" fn panic_fmt() -> ! {
+	loop {}
+}
