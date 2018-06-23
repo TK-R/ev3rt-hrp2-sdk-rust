@@ -1,6 +1,7 @@
 pub mod battery;
 pub mod button;
 pub mod led;
+pub mod motor;
 
 const EV3_SERIAL_BT: u8 = 2;
 

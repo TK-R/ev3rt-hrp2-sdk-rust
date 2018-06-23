@@ -1,10 +1,12 @@
 #![no_std]
-#![feature(lang_items, asm, core_intrinsics)]
+#![feature(panic_implementation, lang_items, asm, core_intrinsics)]
 #![allow(dead_code, improper_ctypes)]
 
+use core::intrinsics;
+use core::panic::PanicInfo;
 mod ev3;
 #[allow(unused_imports)]
-use ev3::{battery, button, led};
+use ev3::{battery, button, led, motor};
 
 #[macro_export]
 macro_rules! println {
@@ -49,17 +51,11 @@ fn button_led_test() {
 }
 
 #[cfg(not(test))]
-#[allow(non_snake_case)]
-#[no_mangle]
-pub extern "C" fn _Unwind_Resume() -> ! {
-	loop {}
-}
-#[cfg(not(test))]
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() {}
-#[cfg(not(test))]
-#[lang = "panic_fmt"]
+
+#[panic_implementation]
 #[no_mangle]
-pub extern "C" fn panic_fmt() -> ! {
-	loop {}
+pub fn panic(_info: &PanicInfo) -> ! {
+	unsafe { intrinsics::abort() }
 }
