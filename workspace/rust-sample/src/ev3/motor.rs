@@ -50,7 +50,7 @@ fn get_motor_type(motor_type: MotorTypeT) -> u8 {
 
 /// モータポートを設定する。
 /// モータポートに接続しているモータのタイプを決定する。既に設定した場合も新しいモータタイプを指定できる。
-pub fn lap_motor_config(motor_port: MotorPortT, motor_type: MotorTypeT) -> i32 {
+pub fn config(motor_port: MotorPortT, motor_type: MotorTypeT) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	let motor_type = get_motor_type(motor_type);
 
@@ -59,20 +59,20 @@ pub fn lap_motor_config(motor_port: MotorPortT, motor_type: MotorTypeT) -> i32 {
 
 /// モータの角位置を取得する
 /// 不正のモータポート番号をしていた場合、常に0を返す
-pub fn lap_motor_get_counts(motor_port: MotorPortT) -> i32 {
+pub fn get_counts(motor_port: MotorPortT) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	unsafe { ev3_motor_get_counts(motor_port) }
 }
 
 /// モータのパワーを取得する
 /// 不正のモータポート番号を指定した場合、常に0を返す
-pub fn lap_motor_get_power(motor_port: MotorPortT) -> i32 {
+pub fn get_power(motor_port: MotorPortT) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	unsafe { ev3_motor_get_power(motor_port) }
 }
 
 /// モータポートのタイプを取得する
-pub fn lap_motor_get_type(motor_port: MotorPortT) -> MotorTypeT {
+pub fn get_type(motor_port: MotorPortT) -> MotorTypeT {
 	let motor_port = get_motor_port(motor_port);
 	unsafe {
 		let motor_type = ev3_motor_get_type(motor_port);
@@ -87,42 +87,32 @@ pub fn lap_motor_get_type(motor_port: MotorPortT) -> MotorTypeT {
 
 /// モータの角位置をゼロにリセットする
 /// モータの角位置センサの値を設定するだけ、モータの実際のパワーと位置に影響を与えない
-pub fn lap_motor_reset_counts(motor_port: MotorPortT) -> i32 {
+pub fn reset_counts(motor_port: MotorPortT) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	unsafe { ev3_motor_reset_counts(motor_port) }
 }
 
 /// モータを指定した角度だけ回転させる
-pub fn lap_motor_rotate(
-	motor_port: MotorPortT,
-	degrees: i32,
-	speed_abs: u32,
-	blocking: bool,
-) -> i32 {
+pub fn rotate(motor_port: MotorPortT, degrees: i32, speed_abs: u32, blocking: bool) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	unsafe { ev3_motor_rotate(motor_port, degrees, speed_abs, blocking) }
 }
 
 /// モータのパワーを設定する
-pub fn lap_motor_set_power(motor_port: MotorPortT, power: i32) -> i32 {
+pub fn set_power(motor_port: MotorPortT, power: i32) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	unsafe { ev3_motor_set_power(motor_port, power) }
 }
 
 /// 2つのモータでロボットのステアリング操作を行う
-pub fn lap_motor_steer(
-	left_motor: MotorPortT,
-	right_motor: MotorPortT,
-	power: i32,
-	turn_ratio: i32,
-) -> i32 {
+pub fn steer(left_motor: MotorPortT, right_motor: MotorPortT, power: i32, turn_ratio: i32) -> i32 {
 	let left_motor = get_motor_port(left_motor);
 	let right_motor = get_motor_port(right_motor);
 	unsafe { ev3_motor_steer(left_motor, right_motor, power, turn_ratio) }
 }
 
 /// モータを停止する
-pub fn lap_motor_stop(motor_port: MotorPortT, motor_brake: bool) -> i32 {
+pub fn stop(motor_port: MotorPortT, motor_brake: bool) -> i32 {
 	let motor_port = get_motor_port(motor_port);
 	unsafe { ev3_motor_stop(motor_port, motor_brake) }
 }

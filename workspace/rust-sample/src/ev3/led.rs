@@ -7,7 +7,7 @@ pub enum LEDColorT {
 
 /// LEDライトのカラーを設定する
 /// 戻り値：設定結果
-pub fn lap_set_led_color(led: LEDColorT) -> i32 {
+pub fn set_led_color(led: LEDColorT) -> i32 {
 	let led = match led {
 		LEDColorT::LEFOff => 0,
 		LEDColorT::LEDRed => 1 << 0,

@@ -10,7 +10,7 @@ pub enum ButtonT {
 
 /// バッテリの電流を取得する
 /// 戻り値：バッテリの電流（mA）
-pub fn lap_button_is_pressed(b: ButtonT) -> bool {
+pub fn is_pressed(b: ButtonT) -> bool {
 	let b: u8 = match b {
 		ButtonT::LeftButton => 0,
 		ButtonT::RightButton => 1,

@@ -1,5 +1,6 @@
 pub mod battery;
 pub mod button;
+pub mod lcd;
 pub mod led;
 pub mod motor;
 
