@@ -29,3 +29,6 @@ void ev3_syslog(uint_t prio, const char *format, ...)
 {
     syslog(prio, format);
 }
+
+// rcsringエラー時にコールするためのアボート関数
+void abort() {}

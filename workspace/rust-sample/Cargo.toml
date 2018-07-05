@@ -3,6 +3,8 @@ name = "rust_src"
 version = "0.1.0"
 authors = ["TK-R"]
 
-
 [lib]
 crate-type=["staticlib"]
+
+[dependencies]
+rcstring = "*"

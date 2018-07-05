@@ -1,17 +1,22 @@
 #![no_std]
 #![feature(panic_implementation, lang_items, asm, core_intrinsics)]
-#![allow(dead_code, improper_ctypes)]
+#![allow(dead_code, improper_ctypes, unused_imports)]
+extern crate rcstring;
 use core::intrinsics;
 use core::panic::PanicInfo;
+use rcstring::*;
+
 mod ev3;
 use button::ButtonT;
-#[allow(unused_imports)]
-use ev3::{battery, button, led, motor};
+
+use ev3::*;
 use led::LEDColorT;
 use motor::{MotorPortT, MotorTypeT};
 
 #[no_mangle]
 pub extern "C" fn main_task(_exinf: i32) {
+	lcd::set_font(lcd::LCDFontT::EV3FontLarge);
+	lcd::draw_string("", 0, 10);
 	button_motor_test();
 }
 
@@ -52,13 +57,15 @@ fn button_motor_test() {
 		}
 	}
 }
-
-#[cfg(not(test))]
-#[lang = "eh_personality"]
-extern "C" fn eh_personality() {}
-
 #[panic_implementation]
 #[no_mangle]
 pub fn panic(_info: &PanicInfo) -> ! {
 	unsafe { intrinsics::abort() }
 }
+
+// These functions are used by the compiler, but not
+// for a bare-bones hello world. These are normally
+// provided by libstd.
+#[lang = "eh_personality"]
+#[no_mangle]
+pub extern "C" fn rust_eh_personality() {}

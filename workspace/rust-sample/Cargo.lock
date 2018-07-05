@@ -1,4 +1,14 @@
 [[package]]
+name = "rcstring"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "rust_src"
 version = "0.1.0"
+dependencies = [
+ "rcstring 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
+[metadata]
+"checksum rcstring 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "3b871e68ed0a7d0b3ae42f2ce19668ea6864bbfc9a095b8714ac65e67a3001a3"

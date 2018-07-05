@@ -99,7 +99,7 @@ include $(APPLDIR)/Makefile.inc
 app: $(APPLDIR) prepare-obj-folder
 	@cd $(APPLDIR) && \
 	cargo clean && \
-	cargo rustc --target $(target) -- -C panic=abort -O && \
+	cargo rustc --target $(target) -- -C panic=abort  -O && \
 	cp $(rust_lib) $(OBJDIR)/rust.o && \
 	cd $(OBJDIR) && \
 	make module_cfg.h && \
