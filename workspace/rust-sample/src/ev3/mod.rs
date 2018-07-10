@@ -3,6 +3,7 @@ pub mod button;
 pub mod lcd;
 pub mod led;
 pub mod motor;
+pub mod write_to;
 
 const EV3_SERIAL_BT: u8 = 2;
 

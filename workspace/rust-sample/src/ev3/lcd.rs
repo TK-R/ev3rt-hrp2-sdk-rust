@@ -1,6 +1,8 @@
 const LCD_WIDTH: u8 = 178;
 const LCD_HEIGHT: u8 = 128;
 use rcstring::{c_char, CString};
+use write_to;
+
 struct ImageT {
 	width: i32,
 	height: i32,
@@ -28,8 +30,11 @@ pub fn set_font(font: LCDFontT) -> i32 {
 }
 
 pub fn draw_string(s: &str, x: i32, y: i32) -> i32 {
-	let ss = CString::new("Rust on EV3RT!!\0").unwrap();
-	unsafe { ev3_lcd_draw_string(ss.into_raw(), x, y) }
+	let mut buf = [0u8; 64];
+	let s: &str = write_to::show(&mut buf, format_args!("{}\0", s)).unwrap();
+
+	let cstr = CString::new(s).unwrap();
+	unsafe { ev3_lcd_draw_string(cstr.into_raw(), x, y) }
 }
 
 extern "C" {

@@ -15,9 +15,15 @@ use motor::{MotorPortT, MotorTypeT};
 
 #[no_mangle]
 pub extern "C" fn main_task(_exinf: i32) {
-	lcd::set_font(lcd::LCDFontT::EV3FontLarge);
-	lcd::draw_string("", 0, 10);
-	button_motor_test();
+	let mut buf = [0u8; 64];
+	lcd::set_font(lcd::LCDFontT::EV3FontSmall);
+	let mut count = 0;
+	loop {
+		let s: &str = write_to::show(&mut buf, format_args!("a={}", count)).unwrap();
+		lcd::draw_string(s, 0, 10);
+		count += 1;
+		ev3::lap_dly_tsk(100);
+	}
 }
 
 #[allow(dead_code)]
