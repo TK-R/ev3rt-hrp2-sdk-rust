@@ -95,9 +95,9 @@ pub fn color_sensor_get_reflect(port: &SensorPort) -> u8 {
 }
 
 /// カラーセンサでRGB Raw値を測定する． 
-pub fn color_sensor_get_rgb_raw(port: &SensorPort, rgb_raw:*mut RGBRaw) {
+pub fn color_sensor_get_rgb_raw(port: &SensorPort, rgb_raw: &mut RGBRaw) {
 	let port = get_sensor_port(&port);
-	unsafe {ev3_color_sensor_get_rgb_raw(port, rgb_raw); }
+	unsafe {ev3_color_sensor_get_rgb_raw(port, &mut *rgb_raw); }
 }
 
 /// ジャイロセンサで角位置を測定する． 

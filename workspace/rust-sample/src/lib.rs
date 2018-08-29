@@ -17,9 +17,13 @@ use sensor::*;
 
 #[no_mangle]
 pub extern "C" fn main_task(_exinf: i32) {
+	lcd::set_font(LCDFontT::EV3FontLarge);
+
 //	button_motor_test();
 //	touch_sensor_test(SensorPort::EV3Port1);
-	color_sensor_reflect_test(SensorPort::EV3Port2);
+
+//	color_sensor_reflect_test(SensorPort::EV3Port2);
+	color_sensor_raw_test(SensorPort::EV3Port2);
 }
 
 
@@ -31,6 +35,23 @@ fn color_sensor_reflect_test(color_sensor_port:SensorPort) {
 		let reflect = sensor::color_sensor_get_reflect(&color_sensor_port);
 		lcd::clear(LCDColorT::EV3LCDWhite);
 		lcd::draw_value("Reflect\0", reflect as i32, "%\0", 0, 0 );
+		ev3::lap_dly_tsk(100);
+
+	}
+}
+
+/// カラーセンサのRGB生値のをLCDに出力するテスト
+fn color_sensor_raw_test(color_sensor_port:SensorPort) {
+	sensor::config(&color_sensor_port, SensorType::ColorSensor);
+	let mut rgb = RGBRaw { red: 0, green: 0,  blue:0 };
+	loop {
+		sensor::color_sensor_get_rgb_raw(&color_sensor_port, &mut rgb);
+		lcd::clear(LCDColorT::EV3LCDWhite);
+		lcd::draw_value("Red  \0", rgb.red as i32, "\0", 0, 0 );
+		lcd::draw_value("Green\0", rgb.green as i32, "\0", 0, 12 );
+		lcd::draw_value("Blue \0", rgb.blue as i32, "\0", 0, 24 );
+		
+		
 		ev3::lap_dly_tsk(100);
 
 	}
