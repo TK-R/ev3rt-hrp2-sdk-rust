@@ -1,7 +1,6 @@
 const LCD_WIDTH: i32 = 178;
 const LCD_HEIGHT: i32 = 128;
 use rcstring::{c_char, CString};
-
 struct ImageT {
 	width: i32,
 	height: i32,
@@ -40,7 +39,6 @@ pub fn draw_value(name: &str, value:i32, unit:&str, x:i32, y:i32) -> i32
 
 pub fn clear(color:LCDColorT) -> i32 {
 	fill_rect(0, 0, LCD_WIDTH, LCD_HEIGHT, color)
-}
 
 pub fn fill_rect(x: i32, y: i32, w: i32, h: i32, color:LCDColorT) -> i32 {
 	let color = match color {
