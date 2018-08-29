@@ -7,20 +7,49 @@ use core::panic::PanicInfo;
 use rcstring::*;
 
 mod ev3;
-use button::ButtonT;
+use button::*;
 use battery::*;
 use lcd::*;
-
 use ev3::*;
-use led::LEDColorT;
-use motor::{MotorPortT, MotorTypeT};
+use led::*;
+use motor::*;
+use sensor::*;
 
 #[no_mangle]
 pub extern "C" fn main_task(_exinf: i32) {
-	lcd::set_font(LCDFontT::EV3FontLarge);
-	button_motor_test();
+//	button_motor_test();
+//	touch_sensor_test(SensorPort::EV3Port1);
+	color_sensor_reflect_test(SensorPort::EV3Port2);
 }
 
+
+/// カラーセンサの反射光の強さをLCDに出力するテスト
+fn color_sensor_reflect_test(color_sensor_port:SensorPort) {
+	sensor::config(&color_sensor_port, SensorType::ColorSensor);
+
+	loop {
+		let reflect = sensor::color_sensor_get_reflect(&color_sensor_port);
+		lcd::clear(LCDColorT::EV3LCDWhite);
+		lcd::draw_value("Reflect\0", reflect as i32, "%\0", 0, 0 );
+		ev3::lap_dly_tsk(100);
+
+	}
+}
+
+/// ボタンの押下状態をLCDに出力するテスト
+#[allow(dead_code)]
+fn touch_sensor_test(touch_sensor_port:SensorPort) {
+	sensor::config(&touch_sensor_port, SensorType::TouchSensor);
+
+	loop {
+		let pressed = sensor::touch_sensor_is_pressed(&touch_sensor_port);
+		lcd::clear(LCDColorT::EV3LCDWhite);
+		lcd::draw_value("Touch\0", pressed as i32, "-\0", 0, 0 );
+		ev3::lap_dly_tsk(100);
+	}
+}
+
+/// 本体ボタンの押下状態とLEDの動作をテストする
 #[allow(dead_code)]
 fn button_led_test() {
 	loop {
@@ -37,8 +66,11 @@ fn button_led_test() {
 	}
 }
 
+/// バッテリ電圧と電流の状態をモニタに出力する
 #[allow(dead_code)]
 fn battery_test() {
+	lcd::set_font(LCDFontT::EV3FontLarge);
+
 	loop {
 		ev3::lap_dly_tsk(100);
 		
@@ -48,6 +80,7 @@ fn battery_test() {
 	}
 }
 
+/// 本体ボタンの押下状態とモータの動作をテストする
 #[allow(dead_code)]
 fn button_motor_test() {
 	motor::config(MotorPortT::EV3PortA, MotorTypeT::LargeMotor);
