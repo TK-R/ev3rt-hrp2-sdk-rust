@@ -1,8 +1,8 @@
 pub enum LEDColorT {
-	LEFOff = 0,
-	LEDRed = 1 << 0,
-	LEDGreen = 1 << 1,
-	LEDOrange = 1 << 0 | 1 << 1,
+	LEFOff,
+	LEDRed,
+	LEDGreen,
+	LEDOrange,
 }
 
 /// LEDライトのカラーを設定する
