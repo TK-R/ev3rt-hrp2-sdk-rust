@@ -5,3 +5,5 @@ pub mod lcd;
 pub mod led;
 pub mod motor;
 pub mod sensor;
+
+pub mod balancer;

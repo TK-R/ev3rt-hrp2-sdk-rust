@@ -1,3 +1,4 @@
+use ev3::balancer::*;
 use ev3::battery::*;
 use ev3::button::*;
 use ev3::ev3rt::*;
@@ -6,8 +7,36 @@ use ev3::led::*;
 use ev3::motor::*;
 use ev3::sensor::*;
 
-/// カラーセンサの反射光の強さをLCDに出力するテスト
-pub fn color_sensor_reflect_sample(color_sensor_port: SensorPort) {
+/// 倒立振子機能を実施するサンプル
+/// 無限ループで倒立し続ける
+pub fn balancer_sample(l_motor: MotorPortT, r_motor: MotorPortT, gyro: SensorPort) {
+	balancer_init();
+	loop {
+		lap_dly_tsk(3);
+	}
+}
+
+/// ジャイロセンサで取得した角速度と角度を表示するサンプル
+/// 無限ループでLCDにジャイロセンサで取得した角速度と角度を表示し続ける
+pub fn gyro_sample(gyro: SensorPort) {
+	sensor_config(&gyro, SensorType::GyroSensor);
+	gyro_sensor_reset(&gyro);
+
+	loop {
+		lap_dly_tsk(100);
+		lcd_clear(LCDColorT::EV3LCDWhite);
+
+		let rate = gyro_sensor_get_rate(&gyro);
+		let angle = gyro_sensor_get_angle(&gyro);
+
+		draw_value("Rate\0", rate as i32, "rad/s\0", 0, 0);
+		draw_value("Angle\0", angle as i32, "deg\0", 0, 15);
+	}
+}
+
+/// カラーセンサの反射光の強さをLCDに出力するサンプル
+/// 無限ループで反射光の強さをLCDに表示し続ける
+pub fn color_sensor_reflect_sample(color_sensor_port: &SensorPort) {
 	sensor_config(&color_sensor_port, SensorType::ColorSensor);
 
 	loop {
@@ -19,6 +48,7 @@ pub fn color_sensor_reflect_sample(color_sensor_port: SensorPort) {
 }
 
 /// カラーセンサのRGB生値のをLCDに出力するサンプル
+/// 無限ループでRGBのRAW値をLCDに表示し続ける
 pub fn color_sensor_raw_sample(color_sensor_port: SensorPort) {
 	sensor_config(&color_sensor_port, SensorType::ColorSensor);
 	let mut rgb = RGBRaw {
@@ -37,7 +67,8 @@ pub fn color_sensor_raw_sample(color_sensor_port: SensorPort) {
 	}
 }
 
-/// ボタンの押下状態をLCDに出力するテスト
+/// タッチセンサの押下状態をLCDに出力するサンプル
+/// 無限ループでタッチセンサの押下状態をLCDに表示し続ける
 #[allow(dead_code)]
 pub fn touch_sensor_sample(touch_sensor_port: SensorPort) {
 	sensor_config(&touch_sensor_port, SensorType::TouchSensor);
@@ -50,7 +81,8 @@ pub fn touch_sensor_sample(touch_sensor_port: SensorPort) {
 	}
 }
 
-/// 本体ボタンの押下状態とLEDの動作をテストする
+/// 本体ボタンの押下状態とLEDの動作をサンプル
+/// 無限ループで本体ボタンの押下状態に応じてLEDの点灯状態を制御する
 #[allow(dead_code)]
 pub fn button_led_sample() {
 	loop {
@@ -67,7 +99,8 @@ pub fn button_led_sample() {
 	}
 }
 
-/// バッテリ電圧と電流の状態をモニタに出力する
+/// バッテリ電圧と電流の状態を表示するサンプル
+/// 無限ループでバッテリ電圧と電流をLCDに表示し続ける
 #[allow(dead_code)]
 pub fn battery_sample() {
 	set_font(LCDFontT::EV3FontLarge);
@@ -81,7 +114,7 @@ pub fn battery_sample() {
 	}
 }
 
-/// 本体ボタンの押下状態とモータの動作をテストする
+/// 本体ボタンの押下状態に応じてモータを回転させるサンプル
 #[allow(dead_code)]
 pub fn button_motor_sample() {
 	config(&MotorPortT::EV3PortA, &MotorTypeT::LargeMotor);

@@ -105,7 +105,7 @@ pub fn gyro_sensor_get_angle(port: &SensorPort) -> i16 {
 	unsafe { ev3_gyro_sensor_get_angle(port) }
 }
 
-/// ジャイロセンサで各速度を測定する
+/// ジャイロセンサで角速度を測定する
 pub fn gyro_sensor_get_rate(port: &SensorPort) -> i16 {
 	let port = get_sensor_port(&port);
 	unsafe { ev3_gyro_sensor_get_rate(port) }

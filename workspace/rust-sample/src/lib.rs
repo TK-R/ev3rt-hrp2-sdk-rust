@@ -26,8 +26,7 @@ pub extern "C" fn main_task(_exinf: i32) {
 	//	button_motor_test();
 	//	touch_sensor_test(SensorPort::EV3Port1);
 
-	//	color_sensor_reflect_test(SensorPort::EV3Port2);
-	color_sensor_raw_sample(ev3::sensor::SensorPort::EV3Port2);
+	gyro_sample(SensorPort::EV3Port4)
 }
 
 #[panic_handler]
