@@ -19,6 +19,9 @@ use ev3::sensor::*;
 
 use sample::*;
 
+// A:尻尾モータ		B:Rモータ	C:Lモータ	D:
+// 1:タッチセンサ	2:超音波	3:カラー	4:ジャイロ
+
 #[no_mangle]
 pub extern "C" fn main_task(_exinf: i32) {
 	set_font(LCDFontT::EV3FontLarge);
@@ -26,7 +29,13 @@ pub extern "C" fn main_task(_exinf: i32) {
 	//	button_motor_test();
 	//	touch_sensor_test(SensorPort::EV3Port1);
 
-	gyro_sample(SensorPort::EV3Port4)
+	//	gyro_sample(SensorPort::EV3Port4)
+	balancer_sample(
+		&MotorPort::EV3PortC,
+		&MotorPort::EV3PortB,
+		&SensorPort::EV3Port1,
+		&SensorPort::EV3Port4,
+	);
 }
 
 #[panic_handler]

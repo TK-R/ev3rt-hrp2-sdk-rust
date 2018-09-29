@@ -63,6 +63,17 @@ fn get_sensor_port(port: &SensorPort) -> u8 {
 	}
 }
 
+fn get_sensor_type(sensor_type: &SensorType) -> u8 {
+	match sensor_type {
+		SensorType::NoneSensor => 0,
+		SensorType::UltraSonicSensor => 1,
+		SensorType::GyroSensor => 2,
+		SensorType::TouchSensor => 3,
+		SensorType::ColorSensor => 4,
+		_ => 255,
+	}
+}
+
 /// カラーセンサで環境光の強さを測定する．
 pub fn color_sensor_get_ambient(port: SensorPort) -> u8 {
 	let port = get_sensor_port(&port);
@@ -124,9 +135,11 @@ pub fn touch_sensor_is_pressed(port: &SensorPort) -> bool {
 }
 
 /// センサポートを設定する
-pub fn sensor_config(port: &SensorPort, sensor_type: SensorType) -> i32 {
+pub fn sensor_config(port: &SensorPort, sensor_type: &SensorType) -> i32 {
 	let port = get_sensor_port(&port);
-	unsafe { ev3_sensor_config(port, sensor_type as u8) }
+	let sensor_type = get_sensor_type(&sensor_type);
+
+	unsafe { ev3_sensor_config(port, sensor_type) }
 }
 
 /// センサポートのセンサタイプを取得する
