@@ -35,6 +35,7 @@ pub extern "C" fn main_task(_exinf: i32) {
 		&MotorPort::EV3PortB,
 		&SensorPort::EV3Port1,
 		&SensorPort::EV3Port4,
+		&SensorPort::EV3Port3,
 	);
 }
 

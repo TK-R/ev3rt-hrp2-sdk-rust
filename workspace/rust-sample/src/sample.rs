@@ -14,9 +14,8 @@ pub fn balancer_sample(
 	r_motor: &MotorPort,
 	touch: &SensorPort,
 	gyro: &SensorPort,
+	color: &SensorPort,
 ) {
-	balancer_init();
-
 	// モータポートの初期化と、エンコーダのリセット
 	motor_config(l_motor, &MotorTypeT::LargeMotor);
 	motor_config(r_motor, &MotorTypeT::LargeMotor);
@@ -27,8 +26,14 @@ pub fn balancer_sample(
 	sensor_config(gyro, &SensorType::GyroSensor);
 	gyro_sensor_reset(gyro);
 
+	// カラーセンサの初期化をして、基準となる反射光を取得
+	sensor_config(color, &SensorType::ColorSensor);
+	let mut centor = color_sensor_get_reflect(color);
+
 	// タッチセンサの初期化
 	sensor_config(touch, &SensorType::TouchSensor);
+	balancer_init();
+
 	let mut r_pwm: i8 = 0;
 	let mut l_pwm: i8 = 0;
 
@@ -40,6 +45,9 @@ pub fn balancer_sample(
 
 			stop(l_motor, true);
 			stop(r_motor, true);
+
+			// 基準となる反射光を設定
+			centor = color_sensor_get_reflect(color);
 
 			balancer_init();
 		}
@@ -65,18 +73,6 @@ pub fn balancer_sample(
 			&mut l_pwm,
 			&mut r_pwm,
 		);
-
-		/*
-		count = count + 1;
-		if count > 100 {
-			count = 0;
-			lcd_clear(LCDColorT::EV3LCDWhite);
-			draw_value("L:\0", l_pwm as i32, "-\0", 0, 0);
-			draw_value("R:\0", r_pwm as i32, "-\0", 0, 15);
-			draw_value("L:\0", theta_m_l as i32, "-\0", 0, 30);
-			draw_value("E:\0", theta_m_r as i32, "-\0", 0, 40);
-		}
-		*/
 
 		if l_pwm != 0 {
 			set_power(l_motor, l_pwm as i32);
