@@ -12,46 +12,43 @@ use ev3::sensor::*;
 pub fn balancer_sample(
 	l_motor: &MotorPort,
 	r_motor: &MotorPort,
+	tail_motor: &MotorPort,
 	touch: &SensorPort,
 	gyro: &SensorPort,
-	color: &SensorPort,
 ) {
-	// モータポートの初期化と、エンコーダのリセット
+	// モータポートの初期化
 	motor_config(l_motor, &MotorTypeT::LargeMotor);
 	motor_config(r_motor, &MotorTypeT::LargeMotor);
-	reset_counts(l_motor);
-	reset_counts(r_motor);
+	motor_config(tail_motor, &MotorTypeT::LargeMotor);
 
-	// ジャイロセンサの初期化と、オフセット値のリセット
+	// ジャイロセンサの初期化ト
 	sensor_config(gyro, &SensorType::GyroSensor);
-	gyro_sensor_reset(gyro);
-
-	// カラーセンサの初期化をして、基準となる反射光を取得
-	sensor_config(color, &SensorType::ColorSensor);
-	let mut centor = color_sensor_get_reflect(color);
 
 	// タッチセンサの初期化
 	sensor_config(touch, &SensorType::TouchSensor);
+
+	stop(l_motor, true);
+	stop(r_motor, true);
+	stop(tail_motor, true);
+
+	// タッチセンサが押されるまで待機
+	while !touch_sensor_is_pressed(touch) {
+		lap_dly_tsk(4);
+	}
+
+	gyro_sensor_reset(gyro);
+	reset_counts(l_motor);
+	reset_counts(r_motor);
+
 	balancer_init();
 
 	let mut r_pwm: i8 = 0;
 	let mut l_pwm: i8 = 0;
 
+	// 尻尾を挙げてスタート
+	rotate(&tail_motor, -45, 20, false);
+
 	loop {
-		while touch_sensor_is_pressed(touch) {
-			gyro_sensor_reset(gyro);
-			reset_counts(l_motor);
-			reset_counts(r_motor);
-
-			stop(l_motor, true);
-			stop(r_motor, true);
-
-			// 基準となる反射光を設定
-			centor = color_sensor_get_reflect(color);
-
-			balancer_init();
-		}
-
 		lap_dly_tsk(4);
 
 		let forward: f32 = 50.0;

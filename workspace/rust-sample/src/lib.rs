@@ -33,9 +33,9 @@ pub extern "C" fn main_task(_exinf: i32) {
 	balancer_sample(
 		&MotorPort::EV3PortC,
 		&MotorPort::EV3PortB,
+		&MotorPort::EV3PortA,
 		&SensorPort::EV3Port1,
 		&SensorPort::EV3Port4,
-		&SensorPort::EV3Port3,
 	);
 }
 
