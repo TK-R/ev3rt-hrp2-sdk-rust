@@ -7,6 +7,71 @@ use ev3::led::*;
 use ev3::motor::*;
 use ev3::sensor::*;
 
+pub fn ultrasonic_sample(ultrasonic: &SensorPort, tail_motor: &MotorPort, arm_motor: &MotorPort) {
+	sensor_config(ultrasonic, &SensorType::UltraSonicSensor);
+
+	motor_config(tail_motor, &MotorTypeT::MediumMotor);
+	motor_config(arm_motor, &MotorTypeT::LargeMotor);
+
+	reset_counts(tail_motor);
+	reset_counts(arm_motor);
+
+	let mut lefttail = true;
+	let center = 30;
+	let diff = 20;
+
+	let mut power_base = 0;
+	let mut armup = true;
+
+	let upper = 30;
+	let lower = 5;
+
+	loop {
+		lap_dly_tsk(10);
+
+		let distance = ultrasonic_sensor_get_distance(ultrasonic);
+		if distance < 70 {
+			power_base = 200;
+		} else {
+			if power_base > 0 {
+				power_base -= 1;
+			}
+		}
+
+		let arm_angle = get_counts(arm_motor);
+		if armup {
+			if arm_angle < upper {
+				set_power(arm_motor, power_base / 10);
+			} else {
+				armup = false;
+			}
+		} else {
+			if arm_angle > lower {
+				set_power(arm_motor, -1 * power_base / 15);
+			} else {
+				armup = true;
+			}
+		}
+
+		let tail_angle = get_counts(tail_motor);
+
+		if lefttail {
+			if tail_angle < center + diff {
+				set_power(tail_motor, power_base / 10);
+			} else {
+				lefttail = false;
+			}
+		} else {
+			if tail_angle > center - diff {
+				set_power(tail_motor, -1 * power_base / 10);
+			} else {
+				lefttail = true;
+			}
+		}
+
+		set_led_color(&LEDColorT::LEDGreen);
+	}
+}
 /// 倒立振子機能を実施するサンプル
 /// 無限ループで倒立し続ける
 pub fn balancer_sample(
